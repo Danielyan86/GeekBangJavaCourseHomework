@@ -2,6 +2,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class XlassLoader extends ClassLoader {
 
@@ -35,9 +36,10 @@ public class XlassLoader extends ClassLoader {
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(resourcePath + suffix);
         try {
             // 读取数据
+            assert inputStream != null;
             int length = inputStream.available();
             byte[] byteArray = new byte[length];
-            inputStream.read(byteArray);
+            Objects.requireNonNull(inputStream).read(byteArray);
             // 转换
             byte[] classBytes = decode(byteArray);
             // 通知底层定义这个类
